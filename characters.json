@@ -1,0 +1,66 @@
+{
+  "887669725004431410": {
+    "tên": "Yuu",
+    "chủng_tộc": "Spirit",
+    "lớp": "Witch",
+    "truyền_thuyết": "Một phù thủy lang thang lẩn mình vào màn đêm.",
+    "hệ": "Hắc Ám",
+    "kỹ_năng": [
+      "Cursed Flame",
+      "Hex Mark"
+    ],
+    "lore": "🪞 Mirror Realm: Một chiều không gian phản chiếu, nơi mỗi sự thật đều bị bóp méo một cách tinh tế. Những linh hồn lạc vào đó sẽ nhìn thấy bản thể mình… nhưng lệch đi, khác đi, đủ để khiến họ nghi ngờ chính bản thân. Ở đây, không có ánh sáng thật – chỉ có thứ ánh sáng giả lập tạo ra từ vô vàn gương vỡ. Các sinh vật sống trong Mirror Realm là những “Bản sao thất lạc”, sinh ra từ những ký ức bị giấu kín. Một khi bước vào gương, bạn không chỉ mất lối về – bạn còn mất bản gốc.",
+    "định_mệnh": "🕯️ Bạn mơ thấy một cánh cổng đang rỉ máu… và khi tỉnh dậy, nó ở ngay trước cửa.",
+    "level": 1,
+    "exp": 100099,
+    "vật_phẩm": [
+      "Shadow Crystal"
+    ],
+    "nhiệm_vụ": [
+      "trial_of_shadows",
+      "echo_of_gate"
+    ],
+    "coin": 999499,
+    "cooldown": {
+      "Phantom Blade": "cooldown_5min"
+    },
+    "quests": [],
+    "hiệu_ứng": []
+  },
+  "687683215632498703": {
+    "tên": "Shadow",
+    "chủng_tộc": "Semigod",
+    "lớp": "Ronin",
+    "truyền_thuyết": "lũ trẻ truyền tai nhau bài đồng dao....",
+    "hệ": "Vô Chủ",
+    "kỹ_năng": [
+      "Shadowstep",
+      "Blood Pact"
+    ],
+    "lore": "⛩ The Gate: Cánh cổng trấn giữ ranh giới giữa thế giới người sống và cõi tử thần. Là nơi những linh hồn chưa định đoạt được vận mệnh phải xếp hàng chờ phán xét. Người ta nói rằng vào những đêm trăng đen, cánh cổng tự hé mở, và một số linh hồn… trốn thoát. Người sống có thể nhìn thấy Gate trong khoảnh khắc họ sắp chết – nhưng một khi nhìn thấy, không ai trở lại là người bình thường. Gate là điểm khởi đầu và cũng là nơi kết thúc, với người sống, kẻ chết và cả những gì nằm giữa.",
+    "định_mệnh": "💀 Bạn tỉnh dậy và thấy mình đang mặc bộ đồ tang lễ… nhưng không biết của ai.",
+    "level": 1,
+    "exp": 0,
+    "vật_phẩm": [],
+    "nhiệm_vụ": [],
+    "hiệu_ứng": []
+  },
+  "1219654710995193942": {
+    "tên": "Ghost",
+    "chủng_tộc": "Dark_elf",
+    "lớp": "Knight",
+    "truyền_thuyết": "Một kỵ sĩ trỗi dậy từ đống tro tàn từ tàn tích của đế chế một thời oanh liệt thống trị không biết bao nhiêu cùng đất",
+    "hệ": "Ánh Sáng",
+    "kỹ_năng": [
+      "Divine Shield",
+      "Oathblade"
+    ],
+    "lore": "🌌 Abyss: Vực Thẳm không có đáy. Nơi ánh sáng từng hiện hữu đã bị nuốt trọn, để lại một màu đen đặc sệt đến mức linh hồn cũng không thể thở. Truyền thuyết kể rằng tất cả những linh hồn sa ngã – dù mạnh mẽ đến đâu – cuối cùng cũng sẽ rơi vào Abyss. Ở đó, thời gian dừng lại, ý niệm tan rã. Người bị giam cầm sẽ dần quên tên mình, mục đích của mình, và cuối cùng là chính mình. Chỉ còn lại một bóng đen lang thang gọi là “Những kẻ không-mặt”. Kẻ mạnh không sợ chết – chỉ sợ bị nuốt mất tồn tại.",
+    "định_mệnh": "⛩ Bạn vô tình nói ra một từ cổ ngữ – và mọi đồng hồ quanh bạn dừng lại trong 10 giây.",
+    "level": 1,
+    "exp": 0,
+    "vật_phẩm": [],
+    "nhiệm_vụ": [],
+    "hiệu_ứng": []
+  }
+}

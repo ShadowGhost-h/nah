@@ -1,0 +1,14 @@
+{
+  "shadow_trial": {
+    "tên": "Shadow Trial",
+    "mô_tả": "Chiến đấu với một thực thể bóng tối để kiểm tra lòng can đảm.",
+    "phần_thưởng": ["EXP:100", "Shadow Crystal"],
+    "cấp_độ_tối_thiểu": 1
+  },
+  "flame_seal": {
+    "tên": "Flame Seal",
+    "mô_tả": "Phong ấn ngọn lửa tà ác tại Đền Lửa.",
+    "phần_thưởng": ["EXP:150", "Fire Sigil"],
+    "cấp_độ_tối_thiểu": 3
+  }
+}

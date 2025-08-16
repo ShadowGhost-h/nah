@@ -1,0 +1,14 @@
+[
+  {
+    "id": "daily_1",
+    "name": "Tiêu diệt 1 quái vật",
+    "description": "Đánh bại một sinh vật từ Abyss",
+    "reward": { "exp": 50, "item": "Potion" }
+  },
+  {
+    "id": "daily_2",
+    "name": "Nói chuyện với NPC",
+    "description": "Trò chuyện với một linh hồn già nua trong Vực Thẳm",
+    "reward": { "exp": 30 }
+  }
+]

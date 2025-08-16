@@ -1,0 +1,4 @@
+[
+  { "name": "Potion", "price": 100, "description": "Hồi phục năng lượng." },
+  { "name": "Scroll of Fate", "price": 200, "description": "Mở ra một định mệnh ngẫu nhiên." }
+]

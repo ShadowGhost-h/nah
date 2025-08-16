@@ -1,0 +1,8 @@
+[
+  {
+    "id": "trial_of_shadows",
+    "name": "Thử Thách Bóng Tối",
+    "description": "Sống sót qua Whispering Hollow.",
+    "reward": { "exp": 100, "item": "Soul Fragment" }
+  }
+]
