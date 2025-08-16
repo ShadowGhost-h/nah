@@ -10,5 +10,41 @@
     "name": "Nói chuyện với NPC",
     "description": "Trò chuyện với một linh hồn già nua trong Vực Thẳm",
     "reward": { "exp": 30 }
+  },
+  {
+    "id": "daily_3",
+    "name": "Nói chuyện với NPC",
+    "description": "Trò chuyện với một linh hồn già nua trong Vực Thẳm",
+    "reward": { "exp": 30 }
+  },
+  {
+    "id": "daily_4",
+    "name": "Thu thập vật phẩm hiếm",
+    "description": "Tìm và thu thập một vật phẩm hiếm trong Vực Thẳm",
+    "reward": { "exp": 40, "item": "Rare Gem" }
+  },
+  {
+    "id": "daily_5",
+    "name": "Giải mã bí ẩn",
+    "description": "Giải một câu đố cổ xưa trong hang động",
+    "reward": { "exp": 60 }
+  },
+  {
+    "id": "daily_6",
+    "name": "Hỗ trợ đồng đội",
+    "description": "Giúp một người chơi khác hoàn thành nhiệm vụ",
+    "reward": { "exp": 35, "item": "Support Token" }
+  },
+  {
+    "id": "daily_7",
+    "name": "Khám phá khu vực mới",
+    "description": "Đặt chân đến một khu vực chưa từng khám phá",
+    "reward": { "exp": 45 }
+  },
+  {
+    "id": "daily_8",
+    "name": "Chế tạo vật phẩm",
+    "description": "Chế tạo một vật phẩm sử dụng nguyên liệu thu thập được",
+    "reward": { "exp": 50, "item": "Crafted Item"} 
   }
 ]

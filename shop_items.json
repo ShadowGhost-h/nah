@@ -1,4 +1,10 @@
 [
   { "name": "Potion", "price": 100, "description": "Hồi phục năng lượng." },
-  { "name": "Scroll of Fate", "price": 200, "description": "Mở ra một định mệnh ngẫu nhiên." }
+  { "name": "Scroll of Fate", "price": 200, "description": "Mở ra một định mệnh ngẫu nhiên." },
+  { "name": "Abyssal Key", "price": 300, "description": "Chìa khóa mở cánh cửa bí mật trong Vực Thẳm." },
+  { "name": "Rare Gem", "price": 500, "description": "Viên đá quý hiếm lấp lánh ánh sáng kỳ ảo." },
+  { "name": "Healing Herb", "price": 50, "description": "Thảo dược có khả năng hồi phục vết thương." },
+  { "name": "Spirit Token", "price": 120, "description": "Biểu tượng của linh hồn, dùng để trao đổi với NPC đặc biệt." },
+  { "name": "Support Token", "price": 80, "description": "Vật phẩm chứng nhận hỗ trợ đồng đội." },
+  { "name": "Ancient Relic", "price": 1000, "description": "Di vật cổ xưa mang sức mạnh thần bí." }
 ]

@@ -4,5 +4,44 @@
     "loại": "nguyên liệu",
     "giá": 50
   },
-  ...
+  "Ancient Relic": {
+    "mô_tả": "Di vật cổ xưa mang sức mạnh thần bí.",
+    "loại": "vật phẩm hiếm",
+    "giá": 200
+  },
+  "Healing Herb": {
+    "mô_tả": "Thảo dược có khả năng hồi phục vết thương.",
+    "loại": "nguyên liệu",
+    "giá": 15
+  },
+  "Abyssal Key": {
+    "mô_tả": "Chìa khóa mở cánh cửa bí mật trong Vực Thẳm.",
+    "loại": "vật phẩm sự kiện",
+    "giá": 100
+  },
+  "Spirit Token": {
+    "mô_tả": "Biểu tượng của linh hồn, dùng để trao đổi với NPC đặc biệt.",
+    "loại": "vật phẩm nhiệm vụ",
+    "giá": 30
+  },
+  "Rare Gem": {
+    "mô_tả": "Viên đá quý hiếm lấp lánh ánh sáng kỳ ảo.",
+    "loại": "nguyên liệu",
+    "giá": 120
+  },
+  "Potion": {
+    "mô_tả": "Thuốc hồi phục năng lượng.",
+    "loại": "tiêu dùng",
+    "giá": 25
+  },
+  "Support Token": {
+    "mô_tả": "Vật phẩm chứng nhận hỗ trợ đồng đội.",
+    "loại": "vật phẩm nhiệm vụ",
+    "giá": 40
+  },
+  "Crafted Item": {
+    "mô_tả": "Vật phẩm được chế tạo từ nguyên liệu thu thập.",
+    "loại": "tiêu dùng",
+    "giá": 60
+  }
 }
