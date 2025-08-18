@@ -646,7 +646,8 @@ async def slash_character_view(interaction: discord.Interaction):
         embed.add_field(name="🕯️ Định mệnh", value=char["định_mệnh"], inline=False)
     if "level" in char:
         embed.add_field(name="🎚️ Cấp độ", value=f"Level {char['level']} | EXP: {char['exp']}", inline=True)
-
+    if "vật_phẩm" in char and char["vật_phẩm"]:
+        embed.add_field(name="🎒 Vật phẩm", value=", ".join(char["vật_phẩm"]), inline=False)
     embed.set_footer(text="⛩ Yami no Sekai | Character Sheet")
     await interaction.response.send_message(embed=embed)
 
@@ -740,8 +741,6 @@ async def slash_character_delete(interaction: discord.Interaction):
     del data[user_id]
     save_characters(data)
     await interaction.response.send_message("🗑️ Hồ sơ của bạn đã bị xoá.")
-
-from discord.ui import View, Select, Modal, TextInput
 
 class CharacterCreateModal(Modal, title="Tạo Hồ Sơ Nhân Vật"):
 
@@ -1031,19 +1030,21 @@ async def daily_quest(interaction: discord.Interaction):
         embed.add_field(name=f"📝 {q['name']}", value=f"{q['description']}\n**Phần thưởng:** {reward_text}", inline=False)
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
-@bot.tree.command(name="shop", description=" Xem vật phẩm có sẵn trong cửa hàng hôm nay")
+@bot.tree.command(name="shop", description=" Xem vật phẩm có sẵn trong cửa hàng")
 async def slash_shop(interaction: discord.Interaction):
     items = load_json("data/shop_items.json")
     if not items:
         await interaction.response.send_message("🛒 Hiện tại shop trống.", ephemeral=True)
         return
 
-    embed = discord.Embed(title="🛒 Shop Vật Phẩm - Hôm Nay", color=0xf1c40f)
-    for item in items:
-        embed.add_field(
-            name=f"{item['name']} - 💰 {item['price']} coin",
-            value=item["description"],
-            inline=False
+    embed = discord.Embed(title="🛒 Shop Vật Phẩm", color=0xf1c40f)
+    for category, item_list in items.items():
+        embed.add_field(name=f"🔹 {category}", value="—", inline=False)
+        for item in items:
+            embed.add_field(
+                name=f"{item['name']} - 💰 {item['price']} coin",
+                value=item["description"],
+                inline=False
         )
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
@@ -1084,7 +1085,7 @@ async def daily_reset():
     print("✅ Reset nhiệm vụ hằng ngày.")
 
     # Reset Shop Items
-    full_shop = load_json("data/all_shop_items.json")
+    full_shop = load_json("data/shop_items.json")
     today_shop = random.sample(full_shop, k=min(4, len(full_shop)))
     save_json("data/shop_items.json", today_shop)
     print("🛒 Reset shop items hằng ngày.")
@@ -1121,8 +1122,6 @@ async def auto_event():
             continue
 
     save_characters(users)
-
-from discord.ext import tasks
 
 @tasks.loop(seconds=60)
 async def cleanup_effects():
@@ -1168,6 +1167,194 @@ async def cleanup_effects():
         }
 
     save_characters(data)
+class Shop(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        # Load dữ liệu shop_items.json
+        with open("shop_weapons.json", "r", encoding="utf-8") as f:
+            self.shop_items = json.load(f)
+
+    @app_commands.command(name="shop", description="Xem cửa hàng")
+    @app_commands.describe(category="Loại item muốn xem (vd: weapons)")
+    async def shop_view(self, interaction: discord.Interaction, category: str):
+        # Lọc item theo category
+        items = [item for item in self.shop_items if item.get("category") == category]
+
+        if not items:
+            await interaction.response.send_message(f"❌ Không có sản phẩm nào trong category `{category}`.", ephemeral=True)
+            return
+
+        # Tạo embed
+        embed = discord.Embed(
+            title=f"🛒 Shop - {category.capitalize()}",
+            description=f"Danh sách {category} hiện có:",
+            color=discord.Color.gold()
+        )
+
+        for item in items:
+            name = item.get("name")
+            desc = item.get("desc", "Không có mô tả.")
+            price = item.get("price", "?")
+            rarity = item.get("rarity", "common").capitalize()
+
+            # Hiển thị stats riêng cho weapon vs armor
+            if item["category"] == "weapon":
+                stats = f"⚔️ ATK: {item.get('atk',0)} | 🎯 Crit: {item.get('crit',0)}%"
+            elif item["category"] == "armor":
+                stats = f"🛡 DEF: {item.get('def',0)} | ⏳ Durability: {item.get('durability',0)}"
+            else:
+                stats = "Không có chỉ số."
+
+            embed.add_field(
+                name=f"{item['id']} | {name} ({rarity}) - 💰 {price} coins",
+                value=f"{desc}\n{stats}",
+                inline=False
+            )
+        await interaction.response.send_message(embed=embed)
+    @app_commands.command(name="buy", description="Mua vật phẩm từ shop")
+    @app_commands.describe(item_id="ID của item muốn mua")
+    async def shop_buy(self, interaction: discord.Interaction, item_id: str):
+        user_id = str(interaction.user.id)
+        users = load_users()
+
+        # Nếu user chưa có data thì tạo mới
+        if user_id not in users:
+            users[user_id] = {"coins": 100, "inventory": []}  # mặc định 100 coins
+
+        user_data = users[user_id]
+
+        # Tìm item
+        item = next((i for i in self.shop_weapons_n_armors if i["id"] == item_id), None)
+        if not item:
+            await interaction.response.send_message("❌ Item không tồn tại!", ephemeral=True)
+            return
+
+        # Check đủ tiền không
+        if user_data["coins"] < item["price"]:
+            await interaction.response.send_message("💸 Bạn không đủ coins để mua vật phẩm này!", ephemeral=True)
+            return
+
+        # Trừ tiền + thêm vào inventory
+        user_data["coins"] -= item["price"]
+        user_data["inventory"].append(item_id)
+
+        # Lưu lại
+        users[user_id] = user_data
+        save_users(users)
+
+        await interaction.response.send_message(
+            f"✅ Bạn đã mua **{item['name']}** với giá 💰 {item['price']} coins!\n"
+            f"💳 Số dư còn lại: {user_data['coin']} coins."
+        )
+async def setup(bot):
+    await bot.add_cog(Shop(bot))
+
+USERS_FILE = "characters.json"
+SHOP_FILE = "shop_weapons_n_armors.json"
+
+def load_users():
+    if not os.path.exists(USERS_FILE):
+        return {}
+    with open(USERS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def load_shop():
+    with open(SHOP_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+class Weapons(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.shop_items = load_shop()
+
+    @app_commands.command(name="weapons", description="Xem túi đồ của bạn")
+    async def weapons(self, interaction: discord.Interaction):
+        user_id = str(interaction.user.id)
+        users = load_users()
+
+        if user_id not in users:
+            await interaction.response.send_message("❌ Bạn chưa có dữ liệu. Hãy thử mua gì đó trước!", ephemeral=True)
+            return
+
+        user_data = users[user_id]
+        coins = user_data.get("coins", 0)
+        weapons = user_data.get("weapons", [])
+
+        if not weapons:
+            await interaction.response.send_message(f"🎒 Túi đồ trống rỗng.\n💳 Coins: {coins}", ephemeral=True)
+            return
+
+        # Gom thông tin item từ shop
+        weapons = []
+        for item_id in weapons:
+            item = next((i for i in self.shop_items if i["id"] == item_id), None)
+            if not item:
+                continue
+            if item["category"] == "weapon":
+                weapons.append(item)
+        # Weapons
+        if weapons:
+            weapon_text = "\n".join(
+                f"- **{w['name']}** (⚔ {w.get('atk',0)}, 🎯 {w.get('crit',0)}%)"
+                for w in weapons
+            )
+        else:
+            weapon_text = "_Không có_"
+        embed.add_field(name="⚔️ Weapons", value=weapon_text, inline=False)
+
+        await interaction.response.send_message(embed=embed)
+async def setup(bot):
+    await bot.add_cog(Weapons(bot))
+class Armors(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.shop_armors = load_shop()
+
+    @app_commands.command(name="armors", description="Xem túi đồ của bạn")
+    async def armors(self, interaction: discord.Interaction):
+        user_id = str(interaction.user.id)
+        users = load_users()
+
+        if user_id not in users:
+            await interaction.response.send_message("❌ Bạn chưa có dữ liệu. Hãy thử mua gì đó trước!", ephemeral=True)
+            return
+
+        user_data = users[user_id]
+        coins = user_data.get("coins", 0)
+        armors = user_data.get("armors", [])
+
+        if not armors:
+            await interaction.response.send_message(f"🎒 Túi đồ trống rỗng.\n💳 Coins: {coins}", ephemeral=True)
+            return
+
+        # Gom thông tin item từ shop
+        armors = []
+        for item_id in armors:
+            item = next((i for i in self.shop_items if i["id"] == item_id), None)
+            if not item:
+                continue
+            if item["category"] == "armor":
+                armors.append(item)
+
+        embed = discord.Embed(
+            title=f"🎒 Túi đồ của {interaction.user.display_name}",
+            description=f"💳 Coins còn lại: {coins}",
+            color=discord.Color.green()
+        )
+
+        # Armors
+        if armors:
+            armor_text = "\n".join(
+                f"- **{a['name']}** (🛡 {a.get('def',0)}, ⏳ {a.get('durability',0)})"
+                for a in armors
+            )
+        else:
+            armor_text = "_Không có_"
+        embed.add_field(name="🛡 Armors", value=armor_text, inline=False)
+
+        await interaction.response.send_message(embed=embed)
+async def setup(bot):
+    await bot.add_cog(Armors(bot))
 
 # ---------- Chạy bot ----------
 bot.run("MTM5MDM1OTAyMTQ2MjIyOTExMg.G0k625.gDXG_Ss2yB1l999fesnbD1P9SBUTIH-JT5Gx0M")

@@ -13,8 +13,8 @@
   },
   {
     "id": "daily_3",
-    "name": "Nói chuyện với NPC",
-    "description": "Trò chuyện với một linh hồn già nua trong Vực Thẳm",
+    "name": "Đấu với  1 người chơi khác",
+    "description": "PVP với một người chơi khác trong võ đài.",
     "reward": { "exp": 30 }
   },
   {
