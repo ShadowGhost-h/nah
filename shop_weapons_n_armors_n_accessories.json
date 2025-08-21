@@ -169,5 +169,75 @@
       "limited": { "global_daily": 1 },
       "tags": ["mythic", "armor"]
     }
+  ],
+  "Accessories":[
+    {
+      "id": "ring_luck",
+      "name": "Nhẫn May Mắn",
+      "desc": "Nhẫn mang lại may mắn, tăng tỉ lệ rơi đồ hiếm.",
+      "category": "accessory",
+      "price": 300,
+      "rarity": "uncommon",
+      "effect": { "drop_rate_increase": 0.1 },
+      "stackable": false,
+      "tags": ["accessory", "luck"]
+    },
+    {
+      "id": "amulet_health",
+      "name": "Dây Chuyền Sinh Lực",
+      "desc": "Dây chuyền tăng cường sức khỏe, hồi phục HP nhanh hơn.",
+      "category": "accessory",
+      "price": 500,
+      "rarity": "rare",
+      "effect": { "hp_regen": 5 },
+      "stackable": false,
+      "tags": ["accessory", "health"]
+    },
+    {
+      "id": "bracelet_speed",
+      "name": "Vòng Tay Tăng Tốc",
+      "desc": "Vòng tay ma thuật, tăng tốc độ di chuyển.",
+      "category": "accessory",
+      "price": 700,
+      "rarity": "epic",
+      "effect": { "+speed": 10 },
+      "stackable": false,
+      "tags": ["accessory", "speed"]
+    },
+    {
+      "id": "necklace_power",
+      "name": "Dây Chuyền Quyền Năng",
+      "desc": "Dây chuyền huyền bí, tăng sức mạnh tấn công.",
+      "category": "accessory",
+      "price": 1200,
+      "rarity": "legendary",
+      "+atk_boost": 20,
+      "+magic_resist": 15,
+      "stackable": false,
+      "tags": ["accessory", "power"]
+    },
+    {
+      "id": "earring_stealth",
+      "name": "Bông Tai Tàng Hình",
+      "desc": "Bông tai ma thuật, giúp tàng hình trong thời gian ngắn.",
+      "category": "accessory",
+      "price": 1000,
+      "rarity": "mythic",
+      "+stealth_duration": 10,
+      "+magic_resist": 20,
+      "stackable": false,
+      "tags": ["accessory", "stealth"]
+    },
+    {
+      "id": "ring_fortune",
+      "name": "Nhẫn Tài Lộc",
+      "desc": "Nhẫn mang lại tài lộc, tăng tỉ lệ nhận vàng khi chiến đấu.",
+      "category": "accessory",
+      "price": 400,
+      "rarity": "uncommon",
+      "effect": { "gold_drop_increase": 0.15 },
+      "stackable": false,
+      "tags": ["accessory", "fortune"]
+    }
   ]
 }

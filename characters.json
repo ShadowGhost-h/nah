@@ -25,7 +25,12 @@
       "Phantom Blade": "cooldown_5min"
     },
     "quests": [],
-    "hiệu_ứng": []
+    "hiệu_ứng": [],
+    "Trang bị": {
+            "weapon": null,
+            "armor": null,
+            "accessory": null
+        }
   },
   "687683215632498703": {
     "tên": "Shadow",
@@ -61,6 +66,11 @@
     "exp": 0,
     "vật_phẩm": [],
     "nhiệm_vụ": [],
-    "hiệu_ứng": []
+    "hiệu_ứng": [],
+    "Trang bị": {
+            "weapon": null,
+            "armor": null,
+            "accessory": null
+        }
   }
 }

@@ -10,7 +10,7 @@ import datetime, random
 import random
 import json
 import os
-
+from dotenv import load_dotenv
 # ---------- Khởi tạo intents ----------
 intents = discord.Intents.default()
 intents.message_content = True
@@ -531,7 +531,7 @@ async def slash_quest_complete(interaction: discord.Interaction, quest_id: str):
 async def slash_my_quests(interaction: discord.Interaction):
     user_id = str(interaction.user.id)
     data = load_characters()
-    quests = get_all_quests()
+    quests = load_quests()
     user_quests = data.get(user_id, {}).get("quests", [])
 
     if not user_quests:
@@ -614,7 +614,12 @@ async def slash_character_create(
         "level": 1,
         "exp": 0,
         "vật_phẩm": [],
-        "nhiệm_vụ": []
+        "nhiệm_vụ": [],
+        "Trang bị": {
+            "weapon": None,
+            "armor": None,
+            "accessory": None
+        }
     }
     save_characters(data)
 
@@ -1073,6 +1078,16 @@ async def daily_reset():
     reset_daily_quests()
     reset_shop_items()
 
+def load_json(path):
+    if not os.path.exists(path):
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 @tasks.loop(hours=24)
 async def daily_reset():
     now = datetime.datetime.now()
@@ -1240,7 +1255,7 @@ class Shop(commands.Cog):
 
         # Lưu lại
         users[user_id] = user_data
-        save_users(users)
+        save_characters(users)
 
         await interaction.response.send_message(
             f"✅ Bạn đã mua **{item['name']}** với giá 💰 {item['price']} coins!\n"
@@ -1250,7 +1265,7 @@ async def setup(bot):
     await bot.add_cog(Shop(bot))
 
 USERS_FILE = "characters.json"
-SHOP_FILE = "shop_weapons_n_armors.json"
+SHOP_FILE = "shop_weapons_n_armors_n_accessories.json"
 
 def load_users():
     if not os.path.exists(USERS_FILE):
@@ -1300,6 +1315,11 @@ class Weapons(commands.Cog):
             )
         else:
             weapon_text = "_Không có_"
+        embed = discord.Embed(
+            title=f"🎒 Túi đồ của {interaction.user.display_name}",
+            description=f"💳 Coins còn lại: {coins}",
+            color=discord.Color.green()
+        )
         embed.add_field(name="⚔️ Weapons", value=weapon_text, inline=False)
 
         await interaction.response.send_message(embed=embed)
@@ -1355,6 +1375,101 @@ class Armors(commands.Cog):
         await interaction.response.send_message(embed=embed)
 async def setup(bot):
     await bot.add_cog(Armors(bot))
+
+class Accessories(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.shop_accessories = load_shop()
+
+    @app_commands.command(name="accessories", description="Xem túi đồ của bạn")
+    async def armors(self, interaction: discord.Interaction):
+        user_id = str(interaction.user.id)
+        users = load_users()
+
+        if user_id not in users:
+            await interaction.response.send_message("❌ Bạn chưa có dữ liệu. Hãy thử mua gì đó trước!", ephemeral=True)
+            return
+
+        user_data = users[user_id]
+        coins = user_data.get("coins", 0)
+        accessories = user_data.get("armors", [])
+
+        if not accessories:
+            await interaction.response.send_message(f"🎒 Túi đồ trống rỗng.\n💳 Coins: {coins}", ephemeral=True)
+            return
+
+        # Gom thông tin item từ shop
+        accessories = []
+        for item_id in accessories:
+            item = next((i for i in self.shop_items if i["id"] == item_id), None)
+            if not item:
+                continue
+            if item["category"] == "armor":
+                accessories.append(item)
+
+        embed = discord.Embed(
+            title=f"🎒 Túi đồ của {interaction.user.display_name}",
+            description=f"💳 Coins còn lại: {coins}",
+            color=discord.Color.green()
+        )
+
+        embed.set_thumbnail(url=interaction.user.display_avatar.url)
+        # Accessories
+        if accessories:
+            accessories_text = "\n".join(
+            f"- **{a['name']}** ({a.get('effect','Không có tác dụng')})"
+            for a in accessories
+            )
+        else:
+            accessories_text = "_Không có_"
+        embed.add_field(name="💍 Accessories", value=accessories_text, inline=False)
+        await interaction.response.send_message(embed=embed)
+async def setup(bot):
+    await bot.add_cog(Accessories(bot))
+
+
+@app_commands.command(name="equip", description="Trang bị vũ khí hoặc giáp hoặc trang sức")
+@app_commands.describe(item_id="ID của vật phẩm muốn trang bị")
+async def equip(self, interaction: discord.Interaction, item_id: str):
+        user_id = str(interaction.user.id)
+        users = load_users()
+
+        if user_id not in users:
+            await interaction.response.send_message("❌ Bạn chưa có dữ liệu. Hãy mua gì đó trước!", ephemeral=True)
+            return
+
+        user_data = users[user_id]
+
+        # Nếu chưa có trường equipped thì tạo
+        if "equipped" not in user_data:
+            user_data["equipped"] = {"weapon": None, "armor": None, "accessory": None}
+
+        inventory = user_data.get("inventory", [])
+        if item_id not in inventory:
+            await interaction.response.send_message("❌ Bạn không sở hữu item này!", ephemeral=True)
+            return
+
+        item = next((i for i in self.shop_items if i["id"] == item_id), None)
+        if not item:
+            await interaction.response.send_message("❌ Item không tồn tại!", ephemeral=True)
+            return
+
+        category = item["category"]
+        if category not in ["weapon", "armor", "accessory"]:
+            await interaction.response.send_message("❌ Chỉ có thể trang bị weapon hoặc armor!", ephemeral=True)
+            return
+
+        # Trang bị
+        user_data["equipped"][category] = item_id
+        users[user_id] = user_data
+        save_characters(users)
+
+        await interaction.response.send_message(
+            f"✅ Bạn đã trang bị **{item['name']}** làm {category.upper()}!"
+        )
+
+async def setup(bot):
+    await bot.add_cog(equip(bot))
 
 # ---------- Chạy bot ----------
 bot.run("MTM5MDM1OTAyMTQ2MjIyOTExMg.G0k625.gDXG_Ss2yB1l999fesnbD1P9SBUTIH-JT5Gx0M")

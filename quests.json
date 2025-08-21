@@ -10,5 +10,41 @@
     "mô_tả": "Phong ấn ngọn lửa tà ác tại Đền Lửa.",
     "phần_thưởng": ["EXP:150", "Fire Sigil"],
     "cấp_độ_tối_thiểu": 3
+  },
+  "water_sacrifice": {
+    "tên": "Water Sacrifice",
+    "mô_tả": "Hy sinh sức mạnh của bạn để cứu lấy dòng sông.",
+    "phần_thưởng": ["EXP:200", "Water Essence"],
+    "cấp_độ_tối_thiểu": 5
+  },
+  "earth_defense": {
+    "tên": "Earth Defense",
+    "mô_tả": "Bảo vệ ngôi làng khỏi cuộc tấn công của quái vật đất.",
+    "phần_thưởng": ["EXP:250", "Earth Shield"],
+    "cấp_độ_tối_thiểu": 7
+  },
+  "wind_rescue": {
+    "tên": "Wind Rescue",
+    "mô_tả": "Giải cứu những người bị mắc kẹt trong cơn bão.",
+    "phần_thưởng": ["EXP:300", "Wind Feather"],
+    "cấp_độ_tối_thiểu": 10
+  },
+  "light_awakening": {
+    "tên": "Light Awakening",
+    "mô_tả": "Đánh thức sức mạnh ánh sáng bên trong bạn.",
+    "phần_thưởng": ["EXP:350", "Light Orb"],
+    "cấp_độ_tối_thiểu": 12
+  },
+  "darkness_confrontation": {
+    "tên": "Darkness Confrontation",
+    "mô_tả": "Đối mặt với bóng tối bên trong bạn.",
+    "phần_thưởng": ["EXP:400", "Darkness Shard"],
+    "cấp_độ_tối_thiểu": 15
+  },
+  "spirit_quest": {
+    "tên": "Spirit Quest",
+    "mô_tả": "Tìm kiếm linh hồn của người đã khuất để giải thoát họ.",
+    "phần_thưởng": ["EXP:500", "Spirit Token"],
+    "cấp_độ_tối_thiểu": 20
   }
 }
